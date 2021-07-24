@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
-import { Navbar, Nav, Form, FormControl, Button, Card } from "react-bootstrap";
+import { Navbar, Nav, Card } from "react-bootstrap";
 import ReactDOMServer from "react-dom/server";
 import mapData from "../data/countries.json";
 import "leaflet/dist/leaflet.css";
@@ -12,54 +12,70 @@ class MyMap extends Component {
     state = {};
 
     countryStyle = {
-        fillColor: "red",
+        fillColor: "#192535",
         fillOpacity: "0.75",
-        color: "black",
+        color: "darkgrey",
         weight: "1",
     };
 
     onEachCountry = (country, layer) => {
         const countryName = country.properties.ADMIN;
         const countryISOCode = country.properties.ISO_A3;
-        // "<strong> `countryName` </strong>" +
-        //     "<br>ISO Code: " +
-        //     countryISOCode
 
         layer.bindPopup(
             ReactDOMServer.renderToString(
-                <div
-                    style={{
-                        marginTop: "-20px",
-                        marginBottom: "-15px",
-                        marginLeft: "-20px",
-                        marginRight: "-20.5px",
-                    }}
-                >
-                    <Card
-                        bg="light"
-                        text="dark"
-                        border="light"
-                        className="mb-2"
-                        style={{ width: "auto" }}
-                    >
-                        <Card.Body>
-                            <Card.Title>
-                                <b>{countryName}</b>
-                            </Card.Title>
-                            <Card.Text>
-                                <p>ISO Code: {countryISOCode}</p>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
+                <html>
+                    <div>
+                        {/* <p>{countryISOCode}</p>
+                        <button className="button">
+                            <strong>{countryName}</strong>
+                        </button> */}
+                        <a
+                            href="/"
+                            target="_blank"
+                            style={{
+                                textDecoration: "none",
+                                color: "white",
+                            }}
+                        >
+                            <strong style={{}}>{countryName}</strong>
+                        </a>
+                    </div>
+                </html>
+                // <div
+                //     style={{
+                //         marginTop: "-20px",
+                //         marginBottom: "-15px",
+                //         marginLeft: "-20px",
+                //         marginRight: "-20.5px",
+                //         width: "30px",
+                //         height: "30px",
+                //     }}
+                // >
+                //     <Card
+                //         bg="danger"
+                //         text="white"
+                //         border="danger"
+                //         className="mb-2"
+                //         style={{ width: "auto" }}
+                //     >
+                //         <Card.Body>
+                //             <Card.Title></Card.Title>
+                //             <Card.Text>
+                //                 <b>{countryName}</b>
+                //                 <p>ISO Code: {countryISOCode}</p>
+                //             </Card.Text>
+                //         </Card.Body>
+                //     </Card>
+                // </div>
             )
         );
         layer.on({
             mouseover: (event) => {
                 event.target.setStyle({
-                    fillColor: "red",
+                    fillColor: "darkslategrey",
                     fillOpacity: "0.9",
-                    color: "black",
+                    color: "darkgrey",
                     weight: "1",
                     transition: "0.2s",
                 });
@@ -68,12 +84,17 @@ class MyMap extends Component {
         layer.on({
             mouseout: (event) => {
                 event.target.setStyle({
-                    fillColor: "red",
+                    fillColor: "#192535",
                     fillOpacity: "0.75",
-                    color: "black",
+                    color: "darkgrey",
                     weight: "1",
                     transition: "0.2s",
                 });
+            },
+        });
+        layer.on({
+            click: () => {
+                console.log(countryName, countryISOCode);
             },
         });
     };
@@ -96,14 +117,14 @@ class MyMap extends Component {
                         COVIDSTATS
                     </Navbar.Brand>
                     <Nav className="mr-auto"></Nav>
-                    <Form inline>
+                    {/* <Form inline>
                         <FormControl
                             type="text"
                             placeholder="Country"
                             className="mr-sm-2"
                         />
                         <Button variant="outline-secondary">Search</Button>
-                    </Form>
+                    </Form> */}
                 </Navbar>
 
                 <MapContainer
@@ -123,7 +144,9 @@ class MyMap extends Component {
                     <Card.Body>
                         <Card.Text style={{ color: "white" }}>
                             Content and information provided by{" "}
-                            <a href="https://covidapi.info/">Covid19 API</a>
+                            <a href="https://disease.sh/">
+                                disease.sh - Open Disease Data API
+                            </a>
                         </Card.Text>
                     </Card.Body>
                 </Card>
